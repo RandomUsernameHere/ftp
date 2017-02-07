@@ -1,12 +1,12 @@
 {
-  "name": "web136/ftp_tools",
+  "name": "web136/ftp",
   "description": "ftp-tools for test",
   "minimum-stability": "stable",
   "license": "BSD",
   "version": "1.0.0",
   "autoload": {
     "psr-4": {
-      "web136\\ftp_tools\\": "src"
+      "web136\\ftp\\": "src"
     }
   },
   "authors": [

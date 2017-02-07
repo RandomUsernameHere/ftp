@@ -1,5 +1,5 @@
 <?php
-    namespace web136\ftp_tools;
+    namespace web136\ftp;
 
     class Factory
     {
