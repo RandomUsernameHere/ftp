@@ -10,13 +10,31 @@
     use web136\ftp\connect_data\SSHConnectTypes;
     use web136\ftp\transfer_protocols\tools\SFTPDirectoryTool;
 
+    /**
+     * Class SFTP
+     *
+     * @package web136\ftp\transfer_protocols
+     */
     class SFTP extends AbstractTransferProtocol
     {
 
+        /**
+         * @var resource соединение ssh
+         */
         protected $ssh_connection;
-        protected $pwd;
+
+        /**
+         * @var \web136\ftp\transfer_protocols\tools\SFTPDirectoryTool
+         */
         protected $directoryTools;
 
+        /**
+         * SFTP constructor.
+         *
+         * @param $connectData
+         *
+         * @throws \Exception
+         */
         public function __construct ($connectData)
         {
 
@@ -27,6 +45,9 @@
             $this->directoryTools = new SFTPDirectoryTool($this->connection);
         }
 
+        /**
+         * @throws \Exception
+         */
         protected function connect ()
         {
 
@@ -42,6 +63,9 @@
             }
         }
 
+        /**
+         * @throws \Exception
+         */
         protected function login ()
         {
 
@@ -75,49 +99,63 @@
 
         }
 
+        /**
+         * Выделяет подсистему sftp
+         */
         protected function setSFTPConnection ()
         {
 
             $this->connection = ssh2_sftp($this->ssh_connection);
         }
 
+        /**
+         * @param string $address
+         *
+         * @return $this
+         */
         public function cd ($address = '.')
         {
+
             $this->directoryTools->cd($address);
 
             return $this;
         }
 
+        /**
+         * @param string $file имя файла на сервере (именно файла! Файл будет взят из текущего пути)
+         * @param string $path путь для сохранения файла
+         *
+         * @return $this
+         * @throws \Exception
+         */
         public function download ($file, $path = '')
         {
-            if(!ssh2_sftp_realpath($this->connection, $file)){
-                $file = $this->pwd().'/'.$file;
-            }
 
-            if(!ssh2_sftp_realpath($this->connection, $file)){
+            if (!ssh2_sftp_realpath($this->connection, $file)) {
+                $file = $this->pwd() . '/' . $file;
+            }
+            if (!ssh2_sftp_realpath($this->connection, $file)) {
                 throw new \Exception('Файл на сервере не найден');
             }
-
             $dirPath = dirname($path);
-
-            if(!realpath($dirPath)){
+            if (!realpath($dirPath)) {
                 throw new \Exception('Директория назначения не существует');
             }
-
-            if(!is_writable($dirPath)){
+            if (!is_writable($dirPath)) {
                 throw new \Exception("Директория назначения недоступна для записи");
             }
-
-           $result = ssh2_scp_recv($this->ssh_connection, $file, $path);
-
-            if(!$result){
+            $result = ssh2_scp_recv($this->ssh_connection, $file, $path);
+            if (!$result) {
                 throw new \Exception('Ошибка при созранении файла');
             }
-            else{
+            else {
                 return $this;
             }
         }
 
+        /**
+         * @throws \Exception
+         */
         public function close ()
         {
 
@@ -126,41 +164,53 @@
             $this->ssh_connection = null;
         }
 
+        /**
+         * @return string
+         */
         public function pwd ()
         {
+
             return $this->directoryTools->getCurrentDirectory();
         }
 
+        /**
+         * @param string $file
+         * @param string $path Необязательный. Если не задать, будет использован текущий путь
+         *
+         * @return $this
+         * @throws \Exception
+         */
         public function upload ($file, $path = '')
         {
-            if(!$path){
+
+            if (!$path) {
                 $path = $this->pwd();
             }
-
-            if(!file_exists($file)){
+            if (!file_exists($file)) {
                 throw new \Exception("Файла '{$file}' не существует");
             }
-
-            if(!is_file($file)){
+            if (!is_file($file)) {
                 throw new \Exception("Путь '{$file}' не ведет к файлу");
             }
-
-            if(!is_readable($file)){
+            if (!is_readable($file)) {
                 throw new \Exception("Нет прав на чтение {$file}");
             }
-
             $fileName = basename($file);
-
-            $result = ssh2_scp_send($this->ssh_connection, $file, $path.'/'.$fileName, 0775);
-
-            if(!$result){
-                throw new \Exception('Не удалось загрузить файл '.$fileName);
+            $result = ssh2_scp_send($this->ssh_connection, $file, $path . '/' . $fileName, 0775);
+            if (!$result) {
+                throw new \Exception('Не удалось загрузить файл ' . $fileName);
             }
-            else{
+            else {
                 return $this;
             }
         }
 
+        /**
+         * @param $comand
+         *
+         * @return string
+         * @throws \Exception
+         */
         public function exec ($comand)
         {
 

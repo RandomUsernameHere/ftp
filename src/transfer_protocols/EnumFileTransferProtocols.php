@@ -6,8 +6,15 @@
      */
     namespace web136\ftp\transfer_protocols;
 
+    /**
+     * Class EnumFileTransferProtocols
+     * содержит список доступных протоколов подключения
+     *
+     * @package web136\ftp\transfer_protocols
+     */
     class EnumFileTransferProtocols
     {
-        const PROTOCOL_FTP = 'FTP';
+
+        const PROTOCOL_FTP  = 'FTP';
         const PROTOCOL_SFTP = 'SFTP';
     }

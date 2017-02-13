@@ -8,9 +8,29 @@
 
     use web136\ftp\helpers\ParamsCheckHelper;
 
+    /**
+     * Class SFTPConnectData
+     * Содержит данные для SFTP подключения
+     *
+     * @package web136\ftp\connect_data
+     */
     class SFTPConnectData implements SSHConnectData
     {
 
+        /**
+         * @var array
+         * [
+        'HOST'                => 'localhost', хост
+        'PORT'                => 22, порт
+        'LOGIN'               => 'anonymous', логин
+        'PASSWORD'            => '', пароль
+        'TIMEOUT'             => 90, таймаут соединения
+        'AUTH_TYPE'           => false, тип авторизации (одна из констант SSHConnectTypes)
+        'PUBKEY_FILE'         => false, путь до публичного ключа
+        'PRIVATE_KEY_FILE'    => false, путь до приватного ключа
+        'KEY_FILE_PASSPHRASE' => '' пароль к файлам ключей
+        ]
+         */
         protected $connectData = [
             'HOST'                => 'localhost',
             'PORT'                => 22,
@@ -23,6 +43,14 @@
             'KEY_FILE_PASSPHRASE' => ''
         ];
 
+        /**
+         * SFTPConnectData constructor.
+         *
+         * @param array $connectData
+         *
+         * @throws \Exception
+         * @throws \UnexpectedValueException
+         */
         public function __construct (
             $connectData = [
                 'HOST'                => 'localhost',
@@ -72,6 +100,13 @@
             }
         }
 
+        /**
+         * @param string $file
+         * @param string $type public|private|'' в зависимости от этого параметра в сообщения об ошибке будет добавлен
+         *                     текст  'публичного кулюча'|'привного ключа'|''
+         *
+         * @throws \Exception
+         */
         protected function checkFile ($file, $type = '')
         {
 
@@ -97,41 +132,62 @@
             }
         }
 
+        /**
+         * @return string
+         */
         public function getAuthType ()
         {
 
             return $this->connectData['AUTH_TYPE'];
         }
 
+        /**
+         * @return string
+         */
         public function getLogin ()
         {
 
             return $this->connectData['LOGIN'];
         }
 
+        /**
+         * @return string
+         */
         public function getPassword ()
         {
             return $this->connectData['PASSWORD'];
         }
 
+        /**
+         * @return integer
+         */
         public function getPort ()
         {
 
             return $this->connectData['PORT'];
         }
 
+        /**
+         * @return integer
+         */
         public function getTimeout ()
         {
 
             return $this->connectData['TIMEOUT'];
         }
 
+        /**
+         * @return string
+         */
         public function getHost ()
         {
 
             return $this->connectData['HOST'];
         }
 
+        /**
+         * @return bool|string
+         */
         public function getPublicKey ()
         {
 
@@ -143,6 +199,9 @@
             }
         }
 
+        /**
+         * @return bool|string
+         */
         public function getPrivateKey ()
         {
 
@@ -154,6 +213,9 @@
             }
         }
 
+        /**
+         * @return string
+         */
         public function getKeyPassphrase ()
         {
 

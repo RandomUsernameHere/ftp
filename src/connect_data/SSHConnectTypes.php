@@ -6,6 +6,12 @@
      */
     namespace web136\ftp\connect_data;
 
+    /**
+     * Class SSHConnectTypes
+     * Типы подключения SSH
+     *
+     * @package web136\ftp\connect_data
+     */
     class SSHConnectTypes
     {
         const PASSWORD = 'PASSWORD';

@@ -6,47 +6,72 @@
      */
     namespace web136\ftp\transfer_protocols\tools;
 
+    /**
+     * Class SFTPDirectoryTool
+     * У меня не получилось придумать способа следуить за текущей директорией лучше;
+     *
+     * @package web136\ftp\transfer_protocols\tools
+     */
     class SFTPDirectoryTool
     {
 
+        /**
+         * @var resource ресурс sftp-подключение
+         */
         protected $connection;
-        protected $currentDirecctory;
+        /**
+         * @var string текущая директория
+         */
+        protected $currentDirectory;
 
+        /**
+         * SFTPDirectoryTool constructor.
+         *
+         * @param $connection
+         *
+         * @throws \Exception в случае если $connection не ресурс
+         */
         public function __construct ($connection)
         {
-            if(!is_resource($connection)){
+
+            if (!is_resource($connection)) {
                 throw new \Exception('Для работы нужно соединение SFTP');
             }
-            else{
+            else {
                 $this->connection = $connection;
             }
-
             $this->setCurrentDirectory('.');
         }
 
         /**
-         * @param mixed $currentDirecctory
+         * Обновляет текущую директорию
+         * @param string $path
          */
         protected function setCurrentDirectory ($path)
         {
-            if(!$this->currentDirecctory){
+
+            if (!$this->currentDirectory) {
                 $path = '.';
             }
-
-            $this->currentDirecctory = ssh2_sftp_realpath($this->connection, $path);
+            $this->currentDirectory = ssh2_sftp_realpath($this->connection, $path);
         }
 
         /**
-         * @return mixed
+         * @return string
          */
         public function getCurrentDirectory ()
         {
-
-            return $this->currentDirecctory;
+            return $this->currentDirectory;
         }
 
-        public function cd($path){
-            if(ssh2_sftp_realpath($this->connection, $path)){
+        /**
+         * Проверяет существует ли путь $path на сервере. Если существует, пишет его в текущую директорию
+         * @param string $path
+         */
+        public function cd ($path)
+        {
+
+            if (ssh2_sftp_realpath($this->connection, $path)) {
                 $this->setCurrentDirectory($path);
             }
         }
