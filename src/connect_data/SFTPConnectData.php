@@ -222,4 +222,13 @@
             return $this->connectData['KEY_FILE_PASSPHRASE'];
         }
 
+        /**
+         * @return array
+         */
+        public function getConnectData (): array
+        {
+
+            return $this->connectData;
+        }
+
     }

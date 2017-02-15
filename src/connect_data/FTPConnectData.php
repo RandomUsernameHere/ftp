@@ -94,4 +94,12 @@
         {
             return $this->connectData['HOST'];
         }
+
+        /**
+         * @return array
+         */
+        public function getConnectData (): array
+        {
+            return $this->connectData;
+        }
     }
