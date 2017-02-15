@@ -21,6 +21,14 @@
             $this->close();
         }
 
+        /**
+         * @return \web136\ftp\connect_data\ConnectData
+         */
+        public function getConnectData ()
+        {
+            return $this->connectData;
+        }
+
         abstract protected function connect();
         abstract protected function login();
 
