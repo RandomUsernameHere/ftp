@@ -17,25 +17,30 @@
         /**
          * @return string
          */
-        public function getHost();
+        public function getHost ();
 
         /**
          * @return string
          */
-        public function getLogin();
+        public function getLogin ();
 
         /**
          * @return string
          */
-        public function getPassword();
+        public function getPassword ();
 
         /**
          * @return integer
          */
-        public function getPort();
+        public function getPort ();
 
         /**
          * @return integer
          */
-        public function getTimeout();
+        public function getTimeout ();
+
+        /**
+         * @return array
+         */
+        public function getConnectData ();
     }

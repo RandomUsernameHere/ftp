@@ -22,11 +22,11 @@
         }
 
         /**
-         * @return \web136\ftp\connect_data\ConnectData
+         * @return array
          */
         public function getConnectData ()
         {
-            return $this->connectData;
+            return $this->connectData->getConnectData();
         }
 
         abstract protected function connect();
