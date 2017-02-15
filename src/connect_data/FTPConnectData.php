@@ -47,7 +47,7 @@
             $connectData['HOST'] = ParamsCheckHelper::checkHost($connectData['HOST']);
 
             foreach ($this->connectData as $index => &$value){
-                if(isset($connectData[$index])){
+                if(isset($connectData[$index]) && !empty($connectData[$index])){
                     $value = $connectData[$index];
                 }
             }
